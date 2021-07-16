@@ -1,0 +1,6 @@
+sn,rated,gameUsername,gameURL,gameRules,timeClass,timeControl,endTime,whiteUsername,whiteRating,whiteResult,blackUsername,blackRating,blackResult,Result,ECO,ECOURL,ECOName,Moves
+0,FALSE,bond1999,https://www.chess.com/game/live/17211774555,chess,bullet,60+1,1623473026,bond1999,1004,checkmated,Elphyn,400,win,checkmated,0,nothing,something,64
+0,FALSE,bond1999,https://www.chess.com/game/live/16508701885,chess,bullet,60+1,1622769710,Elphyn,400,win,bond1999,1191,checkmated,win,0,nothing,something,64
+0,FALSE,bond1999,https://www.chess.com/game/live/17116383997,chess,blitz,300+5,1623377597,Elphyn,1123,agreed,bond1999,926,agreed,agreed,0,nothing,something,64
+0,FALSE,bond1999,https://www.chess.com/game/live/17212325499,chess,bullet,60+1,1623473365,bond1999,1004,checkmated,Elphyn,400,win,checkmated,0,nothing,something,64
+0,FALSE,bond1999,https://www.chess.com/game/live/17119378505,chess,rapid,600,1623381057,Elphyn,1277,win,bond1999,676,resigned,win,0,nothing,something,64
