@@ -72,115 +72,121 @@ def loadPlayerStats(filename):
 					if(randomGame == "skip"):
 						print("skipped")
 					else:
-						writeToCSV(i, playerName, randomGame, getPGN(randomGame['pgn']))
+						writeToCSV(i, playerName, randomGame)
 					break		
 		
 
 	file.close();
 
 # Function which writes data values directly to dataset.csv
-def writeToCSV(sn, playerName, gameDetails, pgn):
-	
-	# Tags from gameDetails
-	rated = gameDetails['rated']
-	gameUsername = playerName
-	gameURL = gameDetails['url'][32:]
-	gameRules = gameDetails['rules']
-	timeClass = gameDetails['time_class']
-	timeControl = gameDetails['time_control']
-	endTime = gameDetails['end_time']
-	whiteUsername = gameDetails['white']['username']
-	whiteRating = gameDetails['white']['rating']
-	whiteResult = gameDetails['white']['result']
-	blackUsername = gameDetails['black']['username']
-	blackRating = gameDetails['black']['rating']
-	blackResult = gameDetails['black']['result']
-	Result = gameDetails['white']['result']
-	
-	file = open('game.txt','r')
-	lines = [line.strip("\n") for line in file.readlines() if line != "\n"]
-	
-	gameResult = "0-0"
-	startTime = 0
-	ECO = 0
-	ECOURL = "nothing"
-	ECOName = "something"
-	halfMoves = 64
-	endingFEN = "blank"
-	victoryReason = ""
-	moves = ""
-	for line in lines:
-		if(line[0] == '['):
-			line = line[1:len(line)-1]
-			data = line.split(" ", 1)
-			# Assigning data from PGN
-			if(data[0] == "Result"):
-				gameResult = data[1].strip('"')
-			if(data[0] == "CurrentPosition"):
-				endingFEN = data[1].strip('"')
-			if(data[0] == "ECO"):
-				ECO = data[1].strip('"')
-			if(data[0] == "ECOUrl"):
-				ECOURL = data[1].strip('"')
-				ECOName = data[1].strip('"')[31:]
-			if(data[0] == "Date"):
-				startTime = datetime.datetime.strptime(data[1].strip('"'), '%Y.%m.%d')
-			if(data[0] == "StartTime"):
-				startTime += datetime.timedelta(hours = int(data[1].strip('"').split(':')[0]))
-				startTime += datetime.timedelta(minutes = int(data[1].strip('"').split(':')[1]))
-				startTime += datetime.timedelta(seconds = int(data[1].strip('"').split(':')[2]))
-				startTime = startTime.timestamp()
-			if(data[0] == "EndDate"):
-				endTime = datetime.datetime.strptime(data[1].strip('"'), '%Y.%m.%d')
-			if(data[0] == "EndTime"):
-				endTime += datetime.timedelta(hours = int(data[1].strip('"').split(':')[0]))
-				endTime += datetime.timedelta(minutes = int(data[1].strip('"').split(':')[1]))
-				endTime += datetime.timedelta(seconds = int(data[1].strip('"').split(':')[2]))
-				endTime = endTime.timestamp()
-			if(data[0] == "Termination"):
-				victoryReason = data[1].strip('"')
+def writeToCSV(sn, playerName, gameDetails):
+	try:
+		file = open('game.txt','w')
+		file.write(gameDetails['pgn'])
+		file.close()
+
+
+		# Tags from gameDetails
+		rated = gameDetails['rated']
+		gameUsername = playerName
+		gameURL = gameDetails['url'][32:]
+		gameRules = gameDetails['rules']
+		timeClass = gameDetails['time_class']
+		timeControl = gameDetails['time_control']
+		endTime = gameDetails['end_time']
+		whiteUsername = gameDetails['white']['username']
+		whiteRating = gameDetails['white']['rating']
+		whiteResult = gameDetails['white']['result']
+		blackUsername = gameDetails['black']['username']
+		blackRating = gameDetails['black']['rating']
+		blackResult = gameDetails['black']['result']
+		Result = gameDetails['white']['result']
 		
-		elif (line[0] == '1'):	
-			for i in range(0, len(line)):
-				if(line[i] == '.' and line[i+1] == ' ' and line[i-1] != '.'):
-					i += 2
-					while(line[i] != ' '):
-						moves += line[i]
-						i += 1
-					moves += " "
-				if(line[i] == '.' and line[i+1] == '.' and line[i+2] == '.' and line[i+3] == ' '):
-					i += 4
-					while(line[i] != ' '):
-						moves += line[i]
-						i += 1
-					moves += " "
+		file = open('game.txt','r')
+		lines = [line.strip("\n") for line in file.readlines() if line != "\n"]
 		
-		moves = moves[0:len(moves)-1]
-		halfMoves = len(moves.split(' '))
+		gameResult = "0-0"
+		startTime = 0
+		ECO = 0
+		ECOURL = "nothing"
+		ECOName = "something"
+		halfMoves = 64
+		endingFEN = "blank"
+		victoryReason = ""
+		moves = ""
+		for line in lines:
+			if(line[0] == '['):
+				line = line[1:len(line)-1]
+				data = line.split(" ", 1)
+				# Assigning data from PGN
+				if(data[0] == "Result"):
+					gameResult = data[1].strip('"')
+				if(data[0] == "CurrentPosition"):
+					endingFEN = data[1].strip('"')
+				if(data[0] == "ECO"):
+					ECO = data[1].strip('"')
+				if(data[0] == "ECOUrl"):
+					ECOURL = data[1].strip('"')
+					ECOName = data[1].strip('"')[31:]
+				if(data[0] == "Date"):
+					startTime = datetime.datetime.strptime(data[1].strip('"'), '%Y.%m.%d')
+				if(data[0] == "StartTime"):
+					startTime += datetime.timedelta(hours = int(data[1].strip('"').split(':')[0]))
+					startTime += datetime.timedelta(minutes = int(data[1].strip('"').split(':')[1]))
+					startTime += datetime.timedelta(seconds = int(data[1].strip('"').split(':')[2]))
+					startTime = startTime.timestamp()
+				if(data[0] == "EndDate"):
+					endTime = datetime.datetime.strptime(data[1].strip('"'), '%Y.%m.%d')
+				if(data[0] == "EndTime"):
+					endTime += datetime.timedelta(hours = int(data[1].strip('"').split(':')[0]))
+					endTime += datetime.timedelta(minutes = int(data[1].strip('"').split(':')[1]))
+					endTime += datetime.timedelta(seconds = int(data[1].strip('"').split(':')[2]))
+					endTime = endTime.timestamp()
+				if(data[0] == "Termination"):
+					victoryReason = data[1].strip('"')
+			
+			elif (line[0] == '1'):	
+				for i in range(0, len(line)):
+					if(line[i] == '.' and line[i+1] == ' ' and line[i-1] != '.'):
+						i += 2
+						while(line[i] != ' '):
+							moves += line[i]
+							i += 1
+						moves += " "
+					if(line[i] == '.' and line[i+1] == '.' and line[i+2] == '.' and line[i+3] == ' '):
+						i += 4
+						while(line[i] != ' '):
+							moves += line[i]
+							i += 1
+						moves += " "
+			
+			moves = moves[0:len(moves)-1]
+			halfMoves = len(moves.split(' '))
 
-				
+					
 
+		
+
+		if(gameResult == "1-0"):
+			winner = "white"
+		elif(gameResult == "0-1"):
+			winner = "black"
+		else:
+			winner = "draw"
+
+
+		# Array to store all the tags for a single game
+		Tags = [sn, gameURL, rated, startTime, endTime, halfMoves, victoryReason, gameResult, winner, timeControl, 
+		whiteUsername, whiteRating, blackUsername, blackRating, moves, endingFEN, ECO, ECOURL, ECOName]
+		
+		file = open('data.csv','a')
+		for tag in Tags:
+			file.write(str(tag) + ",")
+		file.write('\n')
+		file.close()
 	
-
-	if(gameResult == "1-0"):
-		winner = "white"
-	elif(gameResult == "0-1"):
-		winner = "black"
-	else:
-		winner = "draw"
-
-
-	# Array to store all the tags for a single game
-	Tags = [sn, gameURL, rated, startTime, endTime, halfMoves, victoryReason, gameResult, winner, timeControl, 
-	whiteUsername, whiteRating, blackUsername, blackRating, moves, endingFEN, ECO, ECOURL, ECOName]
-	
-	file = open('data.csv','a')
-	for tag in Tags:
-		file.write(str(tag) + ",")
-	file.write('\n')
-	file.close()
-
-
+	except IOError:
+		print(". Error thrown, skipped!")
 
 # Function to parse and print JSON with Indentation
 def printJSON(obj):
@@ -204,12 +210,6 @@ def checkIfRecent(time):
 	month = datetime.datetime.fromtimestamp(time).month
 	if(int(YYYY) == year and int(MM) <= month):
 		return True
-
-# Function to get a specific game's data from PGN
-def getPGN(pgn):
-	file = open('game.txt','w')
-	file.write(pgn)
-	file.close()
 
 # Main function to run the program
 def main():
