@@ -185,8 +185,8 @@ def writeToCSV(sn, playerName, gameDetails):
 		file.write('\n')
 		file.close()
 	
-	except IOError:
-		print(". Error thrown, skipped!")
+	except KeyError:
+		print(player, " had no games, skipped!")
 
 # Function to parse and print JSON with Indentation
 def printJSON(obj):
